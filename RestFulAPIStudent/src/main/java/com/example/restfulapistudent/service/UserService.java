@@ -21,6 +21,7 @@ public class UserService {
     }
 
     private void validateUser(User user) {
+
         if (user.getFullName() == null || user.getFullName().isEmpty()) {
             throw new CustomServiceException("User name cannot be null or empty");
         }

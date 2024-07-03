@@ -36,7 +36,8 @@ public class UserController {
     }
 
     @PostMapping("/users/addnewuser")
-    public ResponseEntity<String> addNewUser(User user, BindingResult bindingResult){
+    public ResponseEntity<String> addNewUser(@RequestBody User user){
+        System.out.println(user);
         try{
             userService.addUser(user);
             //201

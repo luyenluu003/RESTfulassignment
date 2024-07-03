@@ -5,7 +5,9 @@ import EmptyCard from "../components/emptycard";
 import addUserImg from "../imgs/nodata.png";
 import { toast } from "react-toastify";
 import { MdAdd } from "react-icons/md";
-
+import Modal from 'react-modal'
+import AddEditUser from "./addedituser";
+Modal.setAppElement('#root');
 const Home = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -134,6 +136,13 @@ const Home = () => {
                                             <a
                                                 href="#"
                                                 className="font-medium text-blue-600 dark:text-blue-500 btn-primary"
+                                                onClick={() => {
+                                                    setOpenAddEditModal({
+                                                        isShown: true,
+                                                        type: "edit",
+                                                        data: user 
+                                                    })
+                                                }}
                                             >
                                                 Edit
                                             </a>
@@ -159,6 +168,7 @@ const Home = () => {
                     )}
                 </div>
             </div>
+            
         </div>
         <button className="w-16 h-16 flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-800 absolute right-10 bottom-10" onClick={() => {
             setOpenAddEditModal({
@@ -169,6 +179,23 @@ const Home = () => {
         }}>
             <MdAdd className="text-[32px] text-white" />
         </button>
+        
+        <Modal isOpen={openAddEditModal.isShown}
+            onRequestClose={()=>{}}
+            style={{
+                overlay:{
+                    backgroundColor:"rgba(0,0,0,0.2)"
+                }
+            }}
+            contentLabel=""
+            className="w-[95%] md:w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-4 p-5"
+        >
+            <AddEditUser type={openAddEditModal.type} noteData={openAddEditModal.data} onClose={() => {
+                    setOpenAddEditModal({ isShown: false, type: "add", data: null })
+                }}
+                getUserInfo={getUserInfo}
+            />
+        </Modal>
         </>
     );
 };
