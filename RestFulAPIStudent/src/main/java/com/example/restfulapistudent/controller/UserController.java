@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -79,18 +80,22 @@ public class UserController {
     }
 
     @GetMapping("/users/search")
-    public ResponseEntity<List<User>> searchUsers(
-            @RequestParam(required = false) String fullName,
-            @RequestParam(required = false) String gender,
-            @RequestParam(required = false) String homeTown,
-            @RequestParam(required = false) String className,
-            @RequestParam(required = false) String major,
-            @RequestParam(required = false) Float minAverageMark,
-            @RequestParam(required = false) Float maxAverageMark,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String fromDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String toDate) {
+    public ResponseEntity<List<User>> searchUsers(@RequestParam Map<String, String> params) {
+        // Xử lý các tham số từ params
+        String fullName = params.get("fullName");
+        String gender = params.get("gender");
+        String homeTown = params.get("homeTown");
+        String className = params.get("className");
+        String major = params.get("major");
+        Float minAverageMark = params.containsKey("minAverageMark") ? Float.parseFloat(params.get("minAverageMark")) : null;
+        Float maxAverageMark = params.containsKey("maxAverageMark") ? Float.parseFloat(params.get("maxAverageMark")) : null;
+        String fromDate = params.get("fromDate");
+        String toDate = params.get("toDate");
+        String query = params.get("query");
 
-        List<User> users = userService.searchUsers(fullName, gender, homeTown, className, major, minAverageMark, maxAverageMark, fromDate, toDate);
+        // Gọi tới service để tìm kiếm
+        List<User> users = userService.searchUsers(fullName, gender, homeTown, className, major,
+                minAverageMark, maxAverageMark, fromDate, toDate, query);
         return ResponseEntity.ok(users);
     }
 

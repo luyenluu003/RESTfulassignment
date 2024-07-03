@@ -83,12 +83,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<User> searchUsers(String fullName, String gender, String homeTown, String className, String major,
-                                  Float minAverageMark, Float maxAverageMark, String fromDate, String toDate) {
-        List<User> result = new ArrayList<>();
-        result = userRepository.findByCriteria(fullName, gender, homeTown, className, major, minAverageMark,
-                maxAverageMark, fromDate, toDate);
-        return result;
+    public List<User> searchUsers(String fullName, String gender, String homeTown,
+                                  String className, String major, Float minAverageMark,
+                                  Float maxAverageMark, String fromDate, String toDate,
+                                  String query) {
+        return userRepository.findByCriteria(fullName, gender, homeTown, className, major,
+                minAverageMark, maxAverageMark, fromDate, toDate, query);
     }
 
     public List<User> findUsersByBirthdayToday() {

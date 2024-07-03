@@ -55,17 +55,17 @@ const Home = () => {
             const reponse = await axiosInstance.get("/users/search",{
                 params:{query}
             })
-            console.log("users",reponse.data.users)
+            console.log("users",reponse.data)
 
-            if(reponse.data && reponse.data.users){
-                console.log("users",reponse.data.users)
+            if(reponse.data && Array.isArray(reponse.data)){
+                console.log("users",reponse.data)
                 setIsSearch(true)
-                setUsers(reponse.data.users)
+                setUsers(reponse.data)
             }else{
                 toast.error("User not found")
             }
         }catch(error){
-            console.log(error)
+            toast.error("An error occurred while searching for users.");
         }
     }
 
