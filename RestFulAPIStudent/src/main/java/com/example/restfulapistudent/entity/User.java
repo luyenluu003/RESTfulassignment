@@ -1,15 +1,14 @@
 package com.example.restfulapistudent.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-
-@NoArgsConstructor
+@Data
+@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @Component
 @Entity
@@ -37,6 +36,10 @@ public class User {
     @Column(nullable = false, length = 10)
     private String gender;
 
+    public User() {
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -48,61 +51,7 @@ public class User {
     @Column(nullable = false)
     private Float averageMark;
 
-    public String getFullName() {
-        return fullName;
-    }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getMajor() {
-        return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
-    public String getHomeTown() {
-        return homeTown;
-    }
-
-    public void setHomeTown(String homeTown) {
-        this.homeTown = homeTown;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Float getAverageMark() {
-        return averageMark;
-    }
-
-    public void setAverageMark(Float averageMark) {
-        this.averageMark = averageMark;
-    }
 
     @Override
     public String toString() {
