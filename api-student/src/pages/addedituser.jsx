@@ -3,14 +3,14 @@ import { MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
 import axiosInstance from "../utils/axiosInstance";
 
-const AddEditUser = ({ noteData, type, getUserInfo, onClose }) => {
-    const [fullName, setFullName] = useState(noteData?.fullName || "");
-    const [birthday, setBirthday] = useState(noteData?.birthday || "");
-    const [major, setMajor] = useState(noteData?.major || "");
-    const [homeTown, setHomeTown] = useState(noteData?.homeTown || "");
-    const [gender, setGender] = useState(noteData?.gender || "Nam");
-    const [className, setClassName] = useState(noteData?.className || "");
-    const [averageMark, setAverageMark] = useState(noteData?.averageMark || "");
+const AddEditUser = ({ userData, type, getUserInfo, onClose }) => {
+    const [fullName, setFullName] = useState(userData?.fullName || "");
+    const [birthday, setBirthday] = useState(userData?.birthday || "");
+    const [major, setMajor] = useState(userData?.major || "");
+    const [homeTown, setHomeTown] = useState(userData?.homeTown || "");
+    const [gender, setGender] = useState(userData?.gender || "Nam");
+    const [className, setClassName] = useState(userData?.className || "");
+    const [averageMark, setAverageMark] = useState(userData?.averageMark || "");
 
     const addNewUser = async () => {
         try {
@@ -31,7 +31,7 @@ const AddEditUser = ({ noteData, type, getUserInfo, onClose }) => {
     };
 
     const editUser = async () => {
-        const id = noteData?.id;
+        const id = userData?.id;
         if (!id) {
             toast.error("User ID is missing.");
             return;
@@ -57,6 +57,14 @@ const AddEditUser = ({ noteData, type, getUserInfo, onClose }) => {
     const handleAddNote = () => {
         if (!fullName || !birthday || !major || !className || !homeTown || !gender || !averageMark) {
             toast.error("Please fill in all fields.");
+            return;
+        }
+        if(averageMark < 0 || averageMark > 10){
+            toast.error("Average mark must be between 0 and 10.");
+            return;
+        }
+        if(fullName.length>50){
+            toast.error("Full name must be less than 50 characters.");
             return;
         }
 
@@ -160,6 +168,21 @@ const AddEditUser = ({ noteData, type, getUserInfo, onClose }) => {
                                 )}
                             </span>
                             <span className="ml-2 text-gray-800">Nữ</span>
+                        </label>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="radio"
+                                value="Khác"
+                                checked={gender === 'Khác'}
+                                onChange={handleChange}
+                                className="hidden"
+                            />
+                            <span className={`w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center ${gender === 'Khác' ? 'bg-primary' : ''}`}>
+                                {gender === 'Khác' && (
+                                    <span className="w-3 h-3 bg-primary rounded-full"></span>
+                                )}
+                            </span>
+                            <span className="ml-2 text-gray-800">Khác</span>
                         </label>
                     </div>
                 </div>

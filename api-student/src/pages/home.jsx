@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { MdAdd } from "react-icons/md";
 import Modal from 'react-modal'
 import AddEditUser from "./addedituser";
+import { LiaBirthdayCakeSolid } from "react-icons/lia";
+import HappyBirthDayModal from "./happybirthdaymodal";
 Modal.setAppElement('#root');
 const Home = () => {
     const [users, setUsers] = useState([]);
@@ -16,6 +18,10 @@ const Home = () => {
         type: "add",
         data: null
     })
+    const [openHappyBirthDay, setOpenappyBirthDay] = useState({
+        isShown: false,
+        data: null
+    })
 
     const [isSearch, setIsSearch] = useState(false)
     const getUserInfo = async () => {
@@ -23,18 +29,18 @@ const Home = () => {
             const response = await axiosInstance.get("/users");
             if (response.data) {
                 setUsers(response.data);
-                console.log("users", response.data);
             }
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 localStorage.clear();
             } else {
-                console.error("Error fetching users", error);
+                toast.error("Error fetching users");
             }
         } finally {
             setIsLoading(false);
         }
     };
+
 
     const deleteUser = async (IdUser) => {
         const id = IdUser;
@@ -89,7 +95,7 @@ const Home = () => {
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                     {isLoading ? (
                         <div className="text-center py-6">Loading...</div>
-                    ) : users.length > 0 ? (
+                    ) : users?.length > 0 ? (
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr >
@@ -179,6 +185,23 @@ const Home = () => {
         }}>
             <MdAdd className="text-[32px] text-white" />
         </button>
+
+        <button className="w-16 h-16 flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-800 absolute right-10 bottom-10" onClick={() => {
+            setOpenAddEditModal({
+                isShown: true,
+                type: "add",
+                data: null
+            })
+        }}>
+            <MdAdd className="text-[32px] text-white" />
+        </button>
+        <button className="w-16 h-16 flex items-center justify-center rounded-2xl bg-[#F00784] hover:bg-[#F00784]/80 absolute left-10 bottom-10" onClick={() => {
+            setOpenappyBirthDay({
+                isShown: true,
+            })
+        }}>
+            <LiaBirthdayCakeSolid className="text-[32px] text-white"/>
+        </button>
         
         <Modal isOpen={openAddEditModal.isShown}
             onRequestClose={()=>{}}
@@ -190,10 +213,25 @@ const Home = () => {
             contentLabel=""
             className="w-[95%] md:w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-4 p-5"
         >
-            <AddEditUser type={openAddEditModal.type} noteData={openAddEditModal.data} onClose={() => {
+            <AddEditUser type={openAddEditModal.type} userData={openAddEditModal.data} onClose={() => {
                     setOpenAddEditModal({ isShown: false, type: "add", data: null })
                 }}
                 getUserInfo={getUserInfo}
+            />
+        </Modal>
+        <Modal isOpen={openHappyBirthDay.isShown}
+            onRequestClose={()=>{}}
+            style={{
+                overlay:{
+                    backgroundColor:"rgba(0,0,0,0.2)"
+                }
+            }}
+            contentLabel=""
+            className="w-[95%] md:w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-4 p-5"
+        >
+            <HappyBirthDayModal onClose={() => {
+                    setOpenappyBirthDay({ isShown: false, data: null })
+                }}
             />
         </Modal>
         </>
